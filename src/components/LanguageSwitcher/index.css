@@ -1,0 +1,28 @@
+#gt_float_wrapper {
+    bottom: 10px !important;
+    right: 10px !important;
+    border-color: hsl(var(--border)) !important;
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+.gt_float_switcher {
+    background-color: hsl(var(--background) / 0.8) !important;
+    display: block !important;
+}
+
+.gt-selected {
+    background: transparent !important;
+}
+
+.gt_float_switcher .gt-selected .gt-current-lang{
+    color: hsl(var(--muted-foreground)) !important;
+}
+.gt_float_switcher .gt_options a {
+    color: hsl(var(--muted-foreground)) !important;
+}
+
+.gt_float_switcher .gt_options a:hover {
+    background: hsl(var(--primary)) !important; 
+    color: hsl(var(--primary-foreground)) !important;
+}
