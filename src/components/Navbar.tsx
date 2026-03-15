@@ -42,7 +42,7 @@ const Navbar = () => {
 
             {/* Botão currículo */}
             <a
-              href="/curriculo-mauricelio-pereira-silvestre.pdf"
+              href="/curriculo.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-display rounded bg-primary text-primary-foreground hover:opacity-90 transition"
@@ -74,7 +74,7 @@ const Navbar = () => {
 
             {/* Botão currículo */}
             <a
-              href="/curriculo-mauricelio-pereira-silvestre.pdf"
+              href="/curriculo.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-display rounded bg-primary text-primary-foreground hover:opacity-90 transition"
