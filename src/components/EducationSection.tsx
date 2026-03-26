@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 
 type EducationType = {
   course: string;
-  institution: string; 
+  institution: string;
   link: string | null;
   startYear: number;
   startMonth: number;
@@ -88,19 +88,11 @@ const EducationSection = () => {
 
   function isCompleted(edu: EducationType) {
     const now = new Date();
-
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth() + 1;
-
     if (currentYear > edu.endYear) return true;
-
     if (currentYear === edu.endYear && currentMonth > edu.endMonth) return true;
-
     return false;
-  }
-
-  function formatPeriod(edu: EducationType) {
-    return `${edu.startYear} — ${edu.endYear}`;
   }
 
   return (
@@ -116,63 +108,70 @@ const EducationSection = () => {
           <p className="font-display text-primary text-sm mb-2">
             {">"} formação
           </p>
-
           <h2 className="font-display text-3xl md:text-4xl font-bold mb-12 text-foreground">
             Trajetória Acadêmica
           </h2>
         </motion.div>
 
-        <div className="relative">
+        <div className="space-y-5">
+          {educations.map((edu, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="group flex flex-col md:flex-row overflow-hidden rounded-xl border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+            >
+              {/* Left panel */}
+              <div className="relative flex flex-row md:flex-col items-center md:items-stretch justify-between bg-primary/10 px-6 py-5 md:w-40 md:shrink-0 overflow-hidden">
+                {/* Large background year watermark */}
+                <span className="absolute -bottom-3 -right-2 font-display text-7xl font-black text-primary/5 select-none leading-none pointer-events-none">
+                  {edu.endYear}
+                </span>
 
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-border" />
-
-          <div className="space-y-10">
-
-            {educations.map((edu, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="relative pl-8 md:pl-20"
-              >
-
-                <div className="absolute left-0 md:left-8 top-2 w-2 h-2 rounded-full bg-primary -translate-x-[3.5px]" />
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-display text-xs text-primary block">
-                    {formatPeriod(edu)}
+                <div className="flex items-center gap-2 md:flex-col md:items-start md:gap-0">
+                  <span className="font-display text-xl font-bold text-primary leading-none">
+                    {edu.startYear}
                   </span>
-
-                  <span className="text-[10px] px-2 py-1 rounded bg-secondary text-muted-foreground">
-                    {isCompleted(edu) ? 'Concluído' : 'Em andamento'}
+                  <div className="flex-1 md:flex-none md:w-px md:h-6 h-px bg-primary/30 md:mx-0 md:my-2" />
+                  <span className="font-display text-xl font-bold text-primary/30 leading-none">
+                    {edu.endYear}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+                <span className="text-[10px] px-2 py-1 rounded-full border border-primary/20 bg-background/50 text-primary font-display whitespace-nowrap md:mt-auto">
+                  {isCompleted(edu) ? 'Concluído' : 'Em andamento'}
+                </span>
+              </div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px bg-border group-hover:bg-primary/20 transition-colors duration-300" />
+
+              {/* Right content */}
+              <div className="flex-1 px-6 py-5">
+                <div className="flex items-start justify-between gap-3 mb-1">
+                  <h3 className="font-display text-base font-semibold text-foreground leading-snug group-hover:text-primary transition-colors duration-300">
                     {edu.course}
                   </h3>
-
-                  <div className="flex gap-2 text-muted-foreground"> 
-                    {edu.link && (
-                      <a
-                        href={edu.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink size={18} className="hover:text-primary transition-colors cursor-pointer" />
-                      </a>
-                    )}
-                  </div>
+                  {edu.link && (
+                    <a
+                      href={edu.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors shrink-0 opacity-0 group-hover:opacity-100 duration-200"
+                    >
+                      <ExternalLink size={15} />
+                    </a>
+                  )}
                 </div>
 
-                <p className="text-muted-foreground text-sm mb-3">
+                <p className="text-muted-foreground text-sm mb-4">
                   {edu.institution}
                 </p>
 
                 {edu.subjects && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {edu.subjects.map((s) => (
                       <span
                         key={s}
@@ -183,12 +182,9 @@ const EducationSection = () => {
                     ))}
                   </div>
                 )}
-
-              </motion.div>
-            ))}
-
-          </div>
-
+              </div>
+            </motion.div>
+          ))}
         </div>
 
       </div>
