@@ -1,10 +1,38 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+const Counter = ({ to, suffix = "" }: { to: number; suffix?: string }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const duration = 1500;
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      setCount(Math.floor(progress * to));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, to]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+};
 
 const HeroSection = () => {
   const age = Math.floor(
     (new Date().getTime() - new Date("2002-04-24").getTime()) / (365.25 * 24 * 60 * 60 * 1000)
   );
+
+  const stats = [
+    { value: 4, suffix: "+", label: "anos de experiência" },
+    { value: 10, suffix: "+", label: "projetos entregues" },
+    { value: 15, suffix: "+", label: "tecnologias" },
+  ];
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
@@ -40,11 +68,34 @@ const HeroSection = () => {
             <span className="font-display text-xs px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground">
               {age} anos
             </span>
+            <span className="font-display text-xs px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground">
+              Fortaleza - CE
+            </span>
           </div>
 
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl leading-relaxed mb-10">
             Atuação no desenvolvimento e manutenção de aplicações WEB e APP, trabalhando tanto no frontend quanto no backend. Experiência na criação de APIs, integração com bancos de dados, desenvolvimento de interfaces responsivas e implementação de novas funcionalidades focadas em desempenho, escalabilidade e experiência do usuário.
           </p>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-8 mb-10">
+            {stats.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                className="flex flex-col"
+              >
+                <span className="font-display text-3xl font-bold text-primary">
+                  <Counter to={s.value} suffix={s.suffix} />
+                </span>
+                <span className="font-display text-xs text-muted-foreground mt-0.5">
+                  {s.label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
 
           <div className="flex gap-4">
             <a
